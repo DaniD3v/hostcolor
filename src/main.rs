@@ -4,14 +4,14 @@ use clap::{Parser, ValueEnum};
 use fnv::FnvBuildHasher;
 use palette::{FromColor, Okhsl, Srgb};
 
-/// Print a stable colour derived from a string, the hostname by default.
+/// Print a stable color derived from a string, the hostname by default.
 #[derive(Parser)]
 #[command(version)]
 struct Cli {
-    /// String to derive the colour from [default: hostname]
+    /// String to derive the color from [default: hostname]
     seed: Option<String>,
 
-    /// How to print the colour
+    /// How to print the color
     #[arg(short, long, value_enum, default_value_t = Format::Hex)]
     format: Format,
 
@@ -42,7 +42,7 @@ fn unit_interval(value: &str) -> Result<f32, String> {
 }
 
 /// The seed's FNV-1a hash picks the hue; Okhsl keeps every hue equally vivid.
-fn colour(seed: &str, saturation: f32, lightness: f32) -> (u8, u8, u8) {
+fn color(seed: &str, saturation: f32, lightness: f32) -> (u8, u8, u8) {
     let hue = FnvBuildHasher::default().hash_one(seed) as f32 / u64::MAX as f32 * 360.0;
     let rgb: Srgb<u8> = Srgb::from_color(Okhsl::new(hue, saturation, lightness)).into_format();
     rgb.into_components()
@@ -54,7 +54,7 @@ fn main() {
         .seed
         .unwrap_or_else(|| gethostname::gethostname().to_string_lossy().into_owned());
 
-    let (r, g, b) = colour(&seed, cli.saturation, cli.lightness);
+    let (r, g, b) = color(&seed, cli.saturation, cli.lightness);
     match cli.format {
         Format::Hex => print!("#{r:02X}{g:02X}{b:02X}"),
         Format::Fg => print!("\x1b[38;2;{r};{g};{b}m"),

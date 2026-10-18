@@ -1,5 +1,5 @@
 {
-  description = "Stable colour derived from a string, the hostname by default";
+  description = "Stable color derived from a string, the hostname by default";
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
 
