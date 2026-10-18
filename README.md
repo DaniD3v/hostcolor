@@ -2,6 +2,8 @@
 
 Print a stable color derived from a string, the hostname by default.
 
+![starship prompt on three hosts](screenshot.png)
+
 The seed's FNV-1a hash picks a hue in [Okhsl], which keeps every hue equally
 vivid as perceived. Saturation and lightness are shared, so all colors match
 in tone.
