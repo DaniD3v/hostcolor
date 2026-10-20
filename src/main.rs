@@ -1,7 +1,7 @@
-use std::hash::BuildHasher;
+use std::hash::Hasher;
 
 use clap::{Parser, ValueEnum};
-use fnv::FnvBuildHasher;
+use fnv::FnvHasher;
 use palette::{FromColor, Okhsl, Srgb};
 
 /// Print a stable color derived from a string, the hostname by default.
@@ -43,7 +43,10 @@ fn unit_interval(value: &str) -> Result<f32, String> {
 
 /// The seed's FNV-1a hash picks the hue; Okhsl keeps every hue equally vivid.
 fn color(seed: &str, saturation: f32, lightness: f32) -> (u8, u8, u8) {
-    let hue = FnvBuildHasher::default().hash_one(seed) as f32 / u64::MAX as f32 * 360.0;
+    let mut hasher = FnvHasher::default();
+    hasher.write(seed.as_bytes());
+
+    let hue = hasher.finish() as f32 / u64::MAX as f32 * 360.0;
     let rgb: Srgb<u8> = Srgb::from_color(Okhsl::new(hue, saturation, lightness)).into_format();
     rgb.into_components()
 }
