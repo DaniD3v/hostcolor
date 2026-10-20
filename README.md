@@ -12,9 +12,9 @@ in tone.
 
 ```bash
 $ hostcolor
-#55AEB2
+#819CDD
 $ hostcolor server
-#C39553
+#61B18A
 $ hostcolor -f fg            # ANSI escape setting the foreground
 $ hostcolor -f bg -s 0.8     # background, more saturated
 ```
